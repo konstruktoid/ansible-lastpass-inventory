@@ -34,7 +34,7 @@ servers
         test-server-02 [id: 7815456364361241116]
 ```
 
-Configuration file based on the about output:
+Configuration file based on the above output:
 
 ```yaml
 ---
