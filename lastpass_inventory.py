@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Licensed under the Apache License, Version 2.0
 """Populate a Ansible inventory with information from LastPass."""
 import os
 import shutil
@@ -7,6 +9,29 @@ import sys
 import argparse
 from urllib.parse import urlparse
 import yaml
+
+__metaclass__ = type
+
+DOCUMENTATION = """
+    name: lastpass_inventory
+    author:
+      - Thomas Sjögren (@konstruktoid)
+    short_description: Populate a Ansible inventory with information from LastPass.
+    description:
+      - Populates a Ansible inventory with information from LastPass.
+      - Uses a YAML configuration file lastpass_inventory.yml.
+"""
+
+EXAMPLES = """
+# lastpass_inventory.yml configuration file:
+---
+lastpass_hosts:
+    test-server-01: test-server-01
+    test-server-02: test-server-02
+    webserver: test-server-01
+    database: "7815456364361241116"
+...
+"""
 
 try:
     import json
