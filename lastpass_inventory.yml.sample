@@ -1,6 +1,6 @@
 ---
 lastpass_hosts:
-  test-server-01: test-server-01
+  test-server-01:
   test-server-02: test-server-02
   webserver: test-server-01
   database: "7815456364361241116"
