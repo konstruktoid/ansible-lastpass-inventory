@@ -89,15 +89,26 @@ class AnsibleLastPassInventory:
 
                     self.inventory_content["lastpass_hosts"].append(name)
                     self.inventory_content["_meta"]["hostvars"][name] = {}
-                    self.inventory_content["_meta"]["hostvars"][name][
-                        "ansible_user"
-                    ] = host_lpass_json[0]["username"]
-                    self.inventory_content["_meta"]["hostvars"][name][
-                        "ansible_password"
-                    ] = host_lpass_json[0]["password"]
-                    self.inventory_content["_meta"]["hostvars"][name][
-                        "ansible_host"
-                    ] = urlparse(host_lpass_json[0]["url"]).netloc
+
+                    ansible_host = urlparse(host_lpass_json[0]["url"]).netloc
+                    ansible_user = host_lpass_json[0]["username"]
+                    ansible_password = host_lpass_json[0]["password"]
+
+                    if ansible_host:
+                        self.inventory_content["_meta"]["hostvars"][name][
+                            "ansible_host"
+                        ] = ansible_host
+                    if ansible_user:
+                        self.inventory_content["_meta"]["hostvars"][name][
+                            "ansible_user"
+                        ] = ansible_user
+                    if ansible_password:
+                        self.inventory_content["_meta"]["hostvars"][name][
+                            "ansible_password"
+                        ] = ansible_password
+                        self.inventory_content["_meta"]["hostvars"][name][
+                            "ansible_become_password"
+                        ] = ansible_password
 
         except subprocess.CalledProcessError as exception:
             print("There was an issue with:\n  " + name + ": " + identifier)
