@@ -18,10 +18,12 @@ LastPass.
 Both the name and the ID number from e.g. `lpass ls` can be used as an
 identifier for a host.
 
+If the ID is omitted, the name will be used as the identifier.
+
 Note that the script will fail if the name or ID is incorrect or missing.
 
 The LastPass `user` and `password` fields will be used to populate
-`ansible_user` and `ansible_password`.
+`ansible_user`, `ansible_password` and `ansible_become_password`.
 The `ansible_host` address is the extracted netloc from the LastPass `url` field
 using [urllib.parse.urlparse](https://docs.python.org/3/library/urllib.parse.html).
 
@@ -39,10 +41,10 @@ Configuration file based on the above output:
 ```yaml
 ---
 lastpass_hosts:
-    test-server-01: test-server-01
-    test-server-02: test-server-02
-    webserver: test-server-01
-    database: "7815456364361241116"
+  test-server-01:
+  test-server-02: test-server-02
+  webserver: test-server-01
+  database: "7815456364361241116"
 ...
 ```
 
@@ -55,20 +57,20 @@ all:
     lastpass_hosts:
       hosts:
         database:
+          ansible_become_password: SuperSecretLastPass
           ansible_host: 10.0.1.2
           ansible_password: SuperSecretLastPass
           ansible_user: ansibleuser
         test-server-01:
           ansible_host: 10.0.1.1
-          ansible_password: SuperSecretLastPass
           ansible_user: ansibleuser
         test-server-02:
+          ansible_become_password: SuperSecretLastPass
           ansible_host: 10.0.1.2
           ansible_password: SuperSecretLastPass
           ansible_user: ansibleuser
         webserver:
           ansible_host: 10.0.1.1
-          ansible_password: SuperSecretLastPass
           ansible_user: ansibleuser
     ungrouped: {}
 ```
