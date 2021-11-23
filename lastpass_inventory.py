@@ -26,10 +26,10 @@ EXAMPLES = """
 # lastpass_inventory.yml configuration file:
 ---
 lastpass_hosts:
-    test-server-01: test-server-01
-    test-server-02: test-server-02
-    webserver: test-server-01
-    database: "7815456364361241116"
+  test-server-01:
+  test-server-02: test-server-02
+  webserver: test-server-01
+  database: "7815456364361241116"
 ...
 """
 
@@ -74,6 +74,9 @@ class AnsibleLastPassInventory:
 
             for inventory in self.inventory.values():
                 for name, identifier in inventory.items():
+                    if not identifier:
+                        identifier = name
+
                     host_lpass_json = json.loads(
                         subprocess.run(
                             [self.lastpass_cmd, "show", identifier, "--json"],
