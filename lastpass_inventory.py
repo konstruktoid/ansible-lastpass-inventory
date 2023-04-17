@@ -1,16 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Licensed under the Apache License, Version 2.0
 """Populate a Ansible inventory with information from LastPass."""
+import argparse
 import os
 import shutil
 import subprocess
 import sys
-import argparse
 from urllib.parse import urlparse
-import yaml
 
-__metaclass__ = type
+import yaml
 
 DOCUMENTATION = """
     name: lastpass_inventory
@@ -63,7 +61,8 @@ class AnsibleLastPassInventory:
                 sys.exit(1)
             else:
                 with open(
-                    "./lastpass_inventory.yml", "r", encoding="utf-8"
+                    "./lastpass_inventory.yml",
+                    encoding="utf-8",
                 ) as inventory_file:
                     self.inventory = yaml.safe_load(inventory_file)
 
@@ -75,7 +74,7 @@ class AnsibleLastPassInventory:
             for inventory in self.inventory.values():
                 for name, identifier in inventory.items():
                     if not identifier:
-                        identifier = name
+                        identifier = name  # noqa: PLW2901
 
                     host_lpass_json = json.loads(
                         subprocess.run(
@@ -84,7 +83,7 @@ class AnsibleLastPassInventory:
                             check=True,
                             text=True,
                             capture_output=True,
-                        ).stdout
+                        ).stdout,
                     )
 
                     self.inventory_content["lastpass_hosts"].append(name)
@@ -130,7 +129,7 @@ class AnsibleLastPassInventory:
             if not subprocess.check_output([self.lastpass_cmd, "ls"], shell=False):
                 sys.exit(1)
 
-        except Exception as exception_string:
+        except Exception as exception_string:  # noqa: BLE001
             print("Exception: ", str(exception_string), file=sys.stderr)
             sys.exit(1)
 
@@ -139,7 +138,7 @@ class AnsibleLastPassInventory:
         try:
             subprocess.run([self.lastpass_cmd, "ls"], shell=False, check=True)
 
-        except Exception as exception_string:
+        except Exception as exception_string:  # noqa: BLE001
             print("Exception: ", str(exception_string), file=sys.stderr)
             sys.exit(1)
 
