@@ -1,16 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Licensed under the Apache License, Version 2.0
 """Populate a Ansible inventory with information from LastPass."""
+import argparse
 import os
 import shutil
 import subprocess
 import sys
-import argparse
 from urllib.parse import urlparse
-import yaml
 
-__metaclass__ = type
+import yaml
 
 DOCUMENTATION = """
     name: lastpass_inventory
@@ -63,7 +61,8 @@ class AnsibleLastPassInventory:
                 sys.exit(1)
             else:
                 with open(
-                    "./lastpass_inventory.yml", "r", encoding="utf-8"
+                    "./lastpass_inventory.yml",
+                    encoding="utf-8",
                 ) as inventory_file:
                     self.inventory = yaml.safe_load(inventory_file)
 
@@ -75,16 +74,16 @@ class AnsibleLastPassInventory:
             for inventory in self.inventory.values():
                 for name, identifier in inventory.items():
                     if not identifier:
-                        identifier = name
+                        identifier = name  # noqa=PLW2901
 
                     host_lpass_json = json.loads(
                         subprocess.run(
                             [self.lastpass_cmd, "show", identifier, "--json"],
-                            shell=False,
+                            shell=False,  # noqa=S603
                             check=True,
                             text=True,
                             capture_output=True,
-                        ).stdout
+                        ).stdout,
                     )
 
                     self.inventory_content["lastpass_hosts"].append(name)
@@ -127,19 +126,23 @@ class AnsibleLastPassInventory:
                 print("lpass doesn't seem to be installed. Exiting.")
                 sys.exit(1)
 
-            if not subprocess.check_output([self.lastpass_cmd, "ls"], shell=False):
+            if not subprocess.check_output(
+                [self.lastpass_cmd, "ls"], shell=False  # noqa=S603
+            ):
                 sys.exit(1)
 
-        except Exception as exception_string:
+        except Exception as exception_string:  # noqa=BLE001
             print("Exception: ", str(exception_string), file=sys.stderr)
             sys.exit(1)
 
     def list_lastpass_vault(self):
         """Test the lpass ls function."""
         try:
-            subprocess.run([self.lastpass_cmd, "ls"], shell=False, check=True)
+            subprocess.run(
+                [self.lastpass_cmd, "ls"], shell=False, check=True  # noqa=S603
+            )
 
-        except Exception as exception_string:
+        except Exception as exception_string:  # noqa=BLE001
             print("Exception: ", str(exception_string), file=sys.stderr)
             sys.exit(1)
 
