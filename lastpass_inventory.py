@@ -127,7 +127,8 @@ class AnsibleLastPassInventory:
                 sys.exit(1)
 
             if not subprocess.check_output(
-                [self.lastpass_cmd, "ls"], shell=False,  # noqa: S603
+                [self.lastpass_cmd, "ls"],
+                shell=False,  # noqa: S603
             ):
                 sys.exit(1)
 
@@ -139,7 +140,9 @@ class AnsibleLastPassInventory:
         """Test the lpass ls function."""
         try:
             subprocess.run(
-                [self.lastpass_cmd, "ls"], shell=False, check=True,  # noqa: S603
+                [self.lastpass_cmd, "ls"],
+                shell=False,  # noqa: S603
+                check=True,
             )
 
         except Exception as exception_string:  # noqa: BLE001
