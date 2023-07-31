@@ -74,12 +74,12 @@ class AnsibleLastPassInventory:
             for inventory in self.inventory.values():
                 for name, identifier in inventory.items():
                     if not identifier:
-                        identifier = name  # noqa=PLW2901
+                        identifier = name  # noqa: PLW2901
 
                     host_lpass_json = json.loads(
                         subprocess.run(
                             [self.lastpass_cmd, "show", identifier, "--json"],
-                            shell=False,  # noqa=S603
+                            shell=False,  # noqa: S603
                             check=True,
                             text=True,
                             capture_output=True,
@@ -127,11 +127,12 @@ class AnsibleLastPassInventory:
                 sys.exit(1)
 
             if not subprocess.check_output(
-                [self.lastpass_cmd, "ls"], shell=False  # noqa=S603
+                [self.lastpass_cmd, "ls"],
+                shell=False,  # noqa: S603
             ):
                 sys.exit(1)
 
-        except Exception as exception_string:  # noqa=BLE001
+        except Exception as exception_string:  # noqa: BLE001
             print("Exception: ", str(exception_string), file=sys.stderr)
             sys.exit(1)
 
@@ -139,10 +140,12 @@ class AnsibleLastPassInventory:
         """Test the lpass ls function."""
         try:
             subprocess.run(
-                [self.lastpass_cmd, "ls"], shell=False, check=True  # noqa=S603
+                [self.lastpass_cmd, "ls"],
+                shell=False,  # noqa: S603
+                check=True,
             )
 
-        except Exception as exception_string:  # noqa=BLE001
+        except Exception as exception_string:  # noqa: BLE001
             print("Exception: ", str(exception_string), file=sys.stderr)
             sys.exit(1)
 
