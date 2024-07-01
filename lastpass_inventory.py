@@ -77,9 +77,9 @@ class AnsibleLastPassInventory:
                         identifier = name  # noqa: PLW2901
 
                     host_lpass_json = json.loads(
-                        subprocess.run(
+                        subprocess.run(  # noqa: S603
                             [self.lastpass_cmd, "show", identifier, "--json"],
-                            shell=False,  # noqa: S603
+                            shell=False,
                             check=True,
                             text=True,
                             capture_output=True,
@@ -126,9 +126,9 @@ class AnsibleLastPassInventory:
                 print("lpass doesn't seem to be installed. Exiting.")
                 sys.exit(1)
 
-            if not subprocess.check_output(
+            if not subprocess.check_output(  # noqa: S603
                 [self.lastpass_cmd, "ls"],
-                shell=False,  # noqa: S603
+                shell=False,
             ):
                 sys.exit(1)
 
@@ -139,9 +139,9 @@ class AnsibleLastPassInventory:
     def list_lastpass_vault(self):
         """Test the lpass ls function."""
         try:
-            subprocess.run(
+            subprocess.run(  # noqa: S603
                 [self.lastpass_cmd, "ls"],
-                shell=False,  # noqa: S603
+                shell=False,
                 check=True,
             )
 
@@ -151,7 +151,6 @@ class AnsibleLastPassInventory:
 
     def read_cli_args(self):
         """Command line arguments and help information."""
-
         parser = argparse.ArgumentParser(
             description="Populate a Ansible inventory with information from LastPass.",
             epilog="version: " + __version__,
